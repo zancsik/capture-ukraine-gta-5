@@ -1,0 +1,2102 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Capture Ukraine GTA 5</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#05070b;
+      --bg2:#0b1018;
+      --stroke:rgba(255,255,255,.08);
+      --text:#f4f7fb;
+      --muted:#9aa6bf;
+
+      --fam:#00f060;
+      --bal:#d900ff;
+      --vag:#ffd400;
+      --mar:#17cfff;
+
+      --shadow-xl:0 35px 90px rgba(0,0,0,.52);
+      --shadow-lg:0 22px 60px rgba(0,0,0,.36);
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      min-height:100vh;
+      color:var(--text);
+      font-family:Inter,system-ui,sans-serif;
+      background:
+        radial-gradient(1000px 700px at -10% -10%, rgba(39,182,255,.12), transparent 60%),
+        radial-gradient(900px 700px at 110% -5%, rgba(139,92,246,.10), transparent 60%),
+        radial-gradient(900px 700px at 50% 120%, rgba(0,240,96,.08), transparent 55%),
+        linear-gradient(180deg,#05070b,#0b1018);
+      overflow-x:hidden;
+      position:relative;
+    }
+
+    #particleCanvas{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      z-index:0;
+      pointer-events:none;
+      opacity:.95;
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(rgba(255,255,255,.014) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px);
+      background-size:26px 26px;
+      mask-image:linear-gradient(180deg, rgba(0,0,0,.8), transparent 88%);
+      z-index:0;
+      opacity:.32;
+    }
+
+    .page{position:relative;z-index:1}
+
+    .glass{
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
+      border:1px solid var(--stroke);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      box-shadow:var(--shadow-xl);
+    }
+
+    .premium{
+      position:relative;
+      overflow:hidden;
+    }
+
+    .premium::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      border-radius:inherit;
+      padding:1px;
+      background:linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,0), rgba(39,182,255,.18));
+      -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+      mask-composite:exclude;
+      pointer-events:none;
+    }
+
+    button,input,select,textarea{font:inherit;color:var(--text)}
+
+    input,select,textarea{
+      width:100%;
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.028));
+      border-radius:16px;
+      padding:14px 15px;
+      outline:none;
+      transition:.2s ease;
+    }
+
+    input::placeholder,textarea::placeholder{color:#7e8aa1}
+    input:focus,select:focus,textarea:focus{
+      border-color:rgba(39,182,255,.44);
+      box-shadow:0 0 0 4px rgba(39,182,255,.10), 0 10px 30px rgba(39,182,255,.10);
+      background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.034));
+    }
+
+    textarea{min-height:105px;resize:vertical}
+
+    button{
+      width:100%;
+      border:0;
+      border-radius:16px;
+      padding:14px 18px;
+      font-weight:800;
+      cursor:pointer;
+      transition:.18s ease;
+      letter-spacing:.01em;
+    }
+
+    button:hover{transform:translateY(-2px)}
+    button:active{transform:translateY(0)}
+
+    .btn-primary{
+      background:linear-gradient(135deg, #37c5ff 0%, #4a8eff 45%, #8b5cf6 100%);
+      color:#fff;
+      box-shadow:0 16px 40px rgba(39,182,255,.20), 0 0 24px rgba(39,182,255,.14), inset 0 1px 0 rgba(255,255,255,.18);
+    }
+
+    .btn-secondary{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      color:#fff;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    .btn-danger{
+      background:linear-gradient(135deg, #ff6363, #dc2626);
+      color:#fff;
+      box-shadow:0 15px 36px rgba(239,68,68,.20), inset 0 1px 0 rgba(255,255,255,.15);
+    }
+
+    .muted{color:var(--muted)}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:40;
+      padding:14px 16px 0;
+    }
+
+    .topbar-inner{
+      min-height:74px;
+      border-radius:24px;
+      padding:12px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      background:rgba(8,12,20,.76);
+      border:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(20px);
+      box-shadow:var(--shadow-lg);
+    }
+
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:0;
+    }
+
+    .menu-btn{
+      width:44px;
+      height:44px;
+      padding:0;
+      border-radius:14px;
+      display:none;
+      place-items:center;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.035));
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .logo{
+      width:48px;
+      height:48px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      font-size:20px;
+      background:linear-gradient(135deg, rgba(39,182,255,.22), rgba(139,92,246,.18));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 0 24px rgba(39,182,255,.08);
+    }
+
+    .logo-image{
+      background:transparent;
+      border:none;
+      box-shadow:none;
+      width:58px;
+      height:58px;
+      padding:0;
+      flex:0 0 auto;
+    }
+
+    .logo-image img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+      filter:drop-shadow(0 0 14px rgba(59,130,246,.22));
+    }
+
+    .brand-title{
+      font-size:16px;
+      font-weight:900;
+      letter-spacing:.01em;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .brand-sub{
+      margin-top:3px;
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .topbar-right{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 12px;
+      border-radius:999px;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      font-size:12px;
+      font-weight:800;
+      color:var(--muted);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .clock-pill{
+      color:#eef7ff;
+      text-shadow:0 0 14px rgba(39,182,255,.22);
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:320px 1fr;
+      gap:18px;
+      padding:18px 16px 16px;
+      min-height:calc(100vh - 90px);
+    }
+
+    .sidebar{
+      border-radius:30px;
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+      position:sticky;
+      top:98px;
+      height:calc(100vh - 114px);
+    }
+
+    .profile{
+      border-radius:22px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,.08);
+      background:
+        radial-gradient(220px 140px at 100% 0%, rgba(39,182,255,.15), transparent 70%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+    }
+
+    .profile-label{
+      font-size:11px;
+      color:#7f8aa3;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      margin-bottom:10px;
+    }
+
+    .profile strong{
+      display:block;
+      font-size:20px;
+      font-weight:900;
+      letter-spacing:-.02em;
+      margin-bottom:6px;
+    }
+
+    .role-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      margin-top:12px;
+      padding:8px 11px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      color:#eef4ff;
+    }
+
+    .nav{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .nav button{
+      text-align:left;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:15px 15px;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.025));
+      border:1px solid transparent;
+      color:var(--text);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+    }
+
+    .nav button:hover{
+      border-color:rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.03));
+    }
+
+    .nav button.active{
+      background:linear-gradient(135deg, rgba(39,182,255,.18), rgba(139,92,246,.14));
+      border-color:rgba(39,182,255,.22);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.07), 0 0 24px rgba(39,182,255,.08);
+    }
+
+    .logout-wrap{margin-top:auto}
+
+    .main{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(160px,1fr));
+      gap:14px;
+    }
+
+    .stat{
+      border-radius:24px;
+      padding:16px;
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow-lg);
+    }
+
+    .stat::before{
+      content:"";
+      position:absolute;
+      right:-36px;
+      top:-36px;
+      width:130px;
+      height:130px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,255,255,.08), transparent 66%);
+    }
+
+    .stat-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:12px;
+    }
+
+    .stat-name{
+      font-size:13px;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .stat-icon{
+      width:36px;
+      height:36px;
+      border-radius:13px;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .stat b{
+      font-size:30px;
+      line-height:1;
+      letter-spacing:-.04em;
+      font-weight:900;
+    }
+
+    .stat-line{
+      height:5px;
+      border-radius:999px;
+      margin-top:14px;
+      background:rgba(255,255,255,.06);
+      overflow:hidden;
+    }
+
+    .stat-fill{
+      height:100%;
+      border-radius:inherit;
+    }
+
+    .section{display:none}
+    .section.active{display:block}
+
+    .content{
+      display:grid;
+      grid-template-columns:1.36fr .94fr;
+      gap:16px;
+    }
+
+    .panel{
+      border-radius:28px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.03));
+      box-shadow:var(--shadow-xl);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .panel-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:14px;
+    }
+
+    .panel h3{
+      margin:0;
+      font-size:19px;
+      font-weight:900;
+      letter-spacing:-.02em;
+    }
+
+    .panel-sub{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+    }
+
+    .map-shell{
+      margin-top:14px;
+      border-radius:26px;
+      padding:18px;
+      border:1px solid rgba(255,255,255,.08);
+      overflow:auto;
+      position:relative;
+      min-height:560px;
+      background:
+        radial-gradient(700px 320px at 20% 15%, rgba(39,182,255,.08), transparent 60%),
+        radial-gradient(600px 300px at 80% 30%, rgba(139,92,246,.08), transparent 60%),
+        radial-gradient(500px 260px at 50% 90%, rgba(0,240,96,.05), transparent 60%),
+        linear-gradient(180deg, rgba(10,14,22,.94), rgba(7,10,16,.97));
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.024),
+        inset 0 0 120px rgba(39,182,255,.06),
+        0 20px 50px rgba(0,0,0,.32);
+      animation:mapGlow 4.2s ease-in-out infinite;
+    }
+
+    @keyframes mapGlow{
+      0%,100%{
+        box-shadow:
+          inset 0 0 0 1px rgba(255,255,255,.024),
+          inset 0 0 120px rgba(39,182,255,.06),
+          0 20px 50px rgba(0,0,0,.32),
+          0 0 0 rgba(39,182,255,0);
+      }
+      50%{
+        box-shadow:
+          inset 0 0 0 1px rgba(255,255,255,.03),
+          inset 0 0 150px rgba(39,182,255,.10),
+          0 20px 50px rgba(0,0,0,.32),
+          0 0 34px rgba(39,182,255,.12);
+      }
+    }
+
+    .map-shell::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(115deg, transparent 0 14%, rgba(255,255,255,.055) 15%, transparent 16%) 0 0/100% 100% no-repeat,
+        linear-gradient(90deg, transparent 0 37%, rgba(255,255,255,.05) 38%, transparent 39%) 0 0/100% 100% no-repeat,
+        linear-gradient(180deg, transparent 0 46%, rgba(255,255,255,.045) 47%, transparent 48%) 0 0/100% 100% no-repeat,
+        linear-gradient(140deg, transparent 0 58%, rgba(255,255,255,.04) 59%, transparent 60%) 0 0/100% 100% no-repeat,
+        linear-gradient(rgba(255,255,255,.014) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px);
+      background-size:
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        36px 36px,
+        36px 36px;
+      opacity:.26;
+    }
+
+    .map-grid{
+      position:relative;
+      z-index:1;
+      width:max-content;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:repeat(14, 54px);
+      gap:7px;
+      padding:8px;
+    }
+
+    .cell{
+      width:54px;
+      height:54px;
+      border-radius:7px;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:18px;
+      font-weight:900;
+      color:#fff;
+      border:1px solid rgba(255,255,255,.12);
+      cursor:pointer;
+      transition:.18s ease;
+      user-select:none;
+      isolation:isolate;
+    }
+
+    .cell::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      background:linear-gradient(180deg, rgba(255,255,255,.16), transparent 42%);
+      pointer-events:none;
+      opacity:.35;
+    }
+
+    .cell::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      pointer-events:none;
+      opacity:0;
+      transition:.18s ease;
+    }
+
+    .cell:hover{
+      transform:translateY(-2px) scale(1.03);
+      filter:brightness(1.08);
+    }
+
+    .cell:hover::after{
+      opacity:1;
+      box-shadow:inset 0 0 0 2px rgba(255,255,255,.10);
+    }
+
+    .cell small{
+      position:absolute;
+      top:4px;
+      left:6px;
+      font-size:9px;
+      opacity:.95;
+      text-shadow:0 1px 2px rgba(0,0,0,.45);
+      z-index:2;
+    }
+
+    .lock-timer{
+      position:absolute;
+      left:4px;
+      bottom:4px;
+      padding:3px 6px;
+      border-radius:6px;
+      font-size:10px;
+      font-weight:900;
+      color:#fff;
+      background:rgba(32,36,48,.96);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 4px 10px rgba(0,0,0,.28);
+      z-index:2;
+      line-height:1;
+    }
+
+    .cell.selected{
+      outline:2px solid rgba(255,255,255,.95);
+      transform:translateY(-2px);
+      box-shadow:0 0 0 4px rgba(39,182,255,.18), 0 0 26px rgba(39,182,255,.55) !important;
+    }
+
+    .ghost{visibility:hidden;pointer-events:none}
+
+    .row{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(160px,1fr));
+      gap:10px;
+    }
+
+    .list{
+      max-height:500px;
+      overflow:auto;
+      padding-right:3px;
+    }
+
+    .capture{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:20px;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.028));
+      padding:15px;
+      margin-bottom:10px;
+      position:relative;
+      overflow:hidden;
+      box-shadow:var(--shadow-lg);
+    }
+
+    .capture-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:8px;
+    }
+
+    .capture-title{
+      font-size:15px;
+      font-weight:900;
+      line-height:1.45;
+    }
+
+    .capture-meta{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.6;
+      margin-top:4px;
+    }
+
+    .gang-glow{
+      font-weight:900;
+      letter-spacing:.01em;
+    }
+
+    .gang-fam{
+      color:#85ffad;
+      text-shadow:0 0 10px rgba(0,240,96,.50), 0 0 26px rgba(0,240,96,.28);
+    }
+
+    .gang-bal{
+      color:#ff91ff;
+      text-shadow:0 0 10px rgba(217,0,255,.50), 0 0 26px rgba(217,0,255,.28);
+    }
+
+    .gang-vag{
+      color:#fff078;
+      text-shadow:0 0 10px rgba(255,212,0,.50), 0 0 26px rgba(255,212,0,.28);
+    }
+
+    .gang-mar{
+      color:#86ecff;
+      text-shadow:0 0 10px rgba(23,207,255,.50), 0 0 26px rgba(23,207,255,.28);
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+      color:#eef4ff;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+      flex-wrap:wrap;
+    }
+
+    .actions button{
+      width:auto;
+      min-width:170px;
+      padding:11px 14px;
+      border-radius:14px;
+    }
+
+    .section-block{margin-top:14px}
+    .section-block h4{
+      margin:0 0 10px;
+      font-size:15px;
+      font-weight:900;
+    }
+
+    .admin-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .admin-card{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:22px;
+      padding:16px;
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.028));
+      box-shadow:var(--shadow-lg);
+    }
+
+    .admin-card h4{
+      margin:0 0 10px;
+      font-size:15px;
+      font-weight:900;
+    }
+
+    .auth{
+      position:fixed;
+      inset:0;
+      z-index:60;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      background:rgba(3,5,10,.74);
+      backdrop-filter:blur(12px);
+    }
+
+    .auth-card{
+      width:min(470px,100%);
+      border-radius:30px;
+      padding:28px;
+    }
+
+    .auth-top{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:18px;
+    }
+
+    .auth-logo{
+      width:54px;
+      height:54px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      font-size:22px;
+      background:linear-gradient(135deg, rgba(39,182,255,.20), rgba(139,92,246,.18));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 0 25px rgba(39,182,255,.08);
+    }
+
+    .auth-logo-image{
+      background:transparent;
+      border:none;
+      box-shadow:none;
+      padding:0;
+      overflow:hidden;
+    }
+
+    .auth-logo-image img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+      filter:drop-shadow(0 0 12px rgba(59,130,246,.22));
+    }
+
+    .auth-sub{
+      margin-top:4px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
+    .auth-tabs{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .auth-tabs button{
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .auth-tabs .active{
+      background:linear-gradient(135deg, rgba(39,182,255,.16), rgba(139,92,246,.12));
+      border-color:rgba(39,182,255,.22);
+      box-shadow:0 0 22px rgba(39,182,255,.08);
+    }
+
+    .modal-root{
+      position:fixed;
+      inset:0;
+      z-index:100;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      background:rgba(2,4,8,.72);
+      backdrop-filter:blur(10px);
+    }
+
+    .modal-root.show{display:flex}
+
+    .modal-card{
+      width:min(520px,100%);
+      border-radius:28px;
+      padding:22px;
+      background:linear-gradient(180deg, rgba(14,18,28,.94), rgba(10,14,22,.94));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow-xl);
+      position:relative;
+    }
+
+    .modal-title{
+      margin:0 0 8px;
+      font-size:22px;
+      font-weight:900;
+      letter-spacing:-.03em;
+    }
+
+    .modal-text{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.65;
+      margin-bottom:14px;
+    }
+
+    .modal-actions{
+      display:flex;
+      gap:10px;
+      margin-top:14px;
+      flex-wrap:wrap;
+    }
+
+    .modal-actions button{
+      flex:1;
+      min-width:140px;
+    }
+
+    .toast-wrap{
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      z-index:110;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .toast{
+      min-width:260px;
+      max-width:360px;
+      padding:14px 16px;
+      border-radius:16px;
+      color:#fff;
+      font-weight:700;
+      background:linear-gradient(180deg, rgba(14,18,28,.94), rgba(10,14,22,.94));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow-lg);
+      transition:.3s ease;
+    }
+
+    .toast.success{box-shadow:0 16px 36px rgba(0,240,96,.15), var(--shadow-lg)}
+    .toast.error{box-shadow:0 16px 36px rgba(239,68,68,.15), var(--shadow-lg)}
+    .toast.info{box-shadow:0 16px 36px rgba(39,182,255,.15), var(--shadow-lg)}
+
+    @media (max-width:1220px){
+      .content{grid-template-columns:1fr}
+    }
+
+    @media (max-width:980px){
+      .menu-btn{display:grid}
+      .layout{grid-template-columns:1fr}
+      .sidebar{
+        position:fixed;
+        left:12px;
+        top:92px;
+        bottom:12px;
+        width:min(330px, calc(100vw - 24px));
+        height:auto;
+        z-index:55;
+        transform:translateX(-115%);
+        transition:transform .22s ease;
+      }
+      .sidebar.open{transform:translateX(0)}
+      .stats{grid-template-columns:repeat(2, minmax(140px,1fr))}
+      .map-grid{grid-template-columns:repeat(14, 42px);gap:5px}
+      .cell{width:42px;height:42px;font-size:14px}
+      .cell small{font-size:7px}
+      .lock-timer{font-size:8px;padding:2px 4px}
+      .admin-grid{grid-template-columns:1fr}
+    }
+
+    @media (max-width:560px){
+      .topbar-inner{padding:10px 12px}
+      .brand-sub{display:none}
+      .stats{grid-template-columns:1fr}
+      .row,.admin-grid{grid-template-columns:1fr}
+      .capture-top{flex-direction:column;align-items:flex-start}
+      .panel,.sidebar,.auth-card,.modal-card{border-radius:24px}
+      .topbar-right .pill:nth-child(2){display:none}
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particleCanvas"></canvas>
+
+  <div id="auth" class="auth">
+    <div class="auth-card glass premium">
+      <div class="auth-top">
+        <div class="auth-logo auth-logo-image">
+          <img src="kraine-logo.png" alt="Kraine GTA5">
+        </div>
+        <div>
+          <div style="font-size:25px;font-weight:900;letter-spacing:-.03em" id="authTitle">Вхід</div>
+          <div class="auth-sub">Сайт керування каптами для кримінальних фракцій Ukraine GTA V.</div>
+        </div>
+      </div>
+
+      <input id="authLogin" placeholder="Логін">
+      <input id="authPass" type="password" placeholder="Пароль" style="margin-top:10px">
+      <div id="regGangWrap" style="display:none;margin-top:10px">
+        <select id="authGang"></select>
+      </div>
+
+      <button id="authSubmit" class="btn-primary" style="margin-top:12px">Увійти</button>
+
+      <div class="auth-tabs">
+        <button id="tabLogin" type="button">Увійти</button>
+        <button id="tabRegister" type="button">Реєстрація</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="topbar-left">
+          <button id="menuBtn" class="menu-btn">☰</button>
+
+          <div class="logo logo-image">
+            <img src="kraine-logo.png" alt="Kraine GTA5">
+          </div>
+
+          <div style="min-width:0">
+            <div class="brand-title">Capture Ukraine GTA 5</div>
+            <div class="brand-sub">Сайт взаємодії з територіями на сервері Ukraine GTA 5</div>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <span class="pill">● Crime</span>
+          <span class="pill" id="territoriesBadge">80 Territories</span>
+          <span class="pill clock-pill" id="liveClock">--:--:--</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside id="sidebar" class="sidebar glass premium">
+        <div class="profile">
+          <div class="profile-label">Поточний користувач</div>
+          <strong id="uLogin">-</strong>
+          <div id="uGang" class="muted">-</div>
+          <div class="role-badge">
+            <span>👑</span>
+            <span id="uRole">-</span>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <button class="active" data-target="captures">⚔ Захоплення територій</button>
+          <button data-target="cabinet">🏴 Кабінет банди</button>
+          <button data-target="history">🕘 Історія</button>
+          <button id="adminNav" data-target="admin" style="display:none">⚙ Адмін-панель</button>
+        </nav>
+
+        <div class="logout-wrap">
+          <button id="logoutBtn" class="btn-secondary">Вийти</button>
+        </div>
+      </aside>
+
+      <main class="main">
+        <section class="stats">
+          <div class="stat">
+            <div class="stat-top">
+              <div class="stat-name">The Families</div>
+              <div class="stat-icon">🟢</div>
+            </div>
+            <b id="sFam">0</b>
+            <div class="stat-line"><div class="stat-fill" style="background:linear-gradient(90deg,var(--fam),#5cff9e);width:100%"></div></div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-top">
+              <div class="stat-name">The Ballas Gang</div>
+              <div class="stat-icon">🟣</div>
+            </div>
+            <b id="sBal">0</b>
+            <div class="stat-line"><div class="stat-fill" style="background:linear-gradient(90deg,var(--bal),#ff74ff);width:100%"></div></div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-top">
+              <div class="stat-name">Northside Vagos</div>
+              <div class="stat-icon">🟡</div>
+            </div>
+            <b id="sVag">0</b>
+            <div class="stat-line"><div class="stat-fill" style="background:linear-gradient(90deg,var(--vag),#ffe96c);width:100%"></div></div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-top">
+              <div class="stat-name">Marabunta Grande</div>
+              <div class="stat-icon">🔵</div>
+            </div>
+            <b id="sMar">0</b>
+            <div class="stat-line"><div class="stat-fill" style="background:linear-gradient(90deg,var(--mar),#7aeaff);width:100%"></div></div>
+          </div>
+        </section>
+
+        <section id="sec-captures" class="section active">
+          <div class="content">
+            <div class="panel premium">
+              <div class="panel-head">
+                <div>
+                  <h3>Карта територій</h3>
+                  <div class="panel-sub">Таймер показується тільки після завершення капта.</div>
+                </div>
+              </div>
+
+              <div class="map-shell">
+                <div id="mapGrid" class="map-grid"></div>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <div class="panel premium">
+                <div class="panel-head">
+                  <div>
+                    <h3>Подання капта</h3>
+                    <div class="panel-sub">Створення нового захоплення території.</div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <select id="capAttack"></select>
+                  <select id="capDefend"></select>
+                  <input id="capTerr" type="number" min="1" max="80" placeholder="Територія №">
+                  <select id="capFormat"></select>
+                  <input id="capDate" type="date">
+                  <input id="capTime" type="time">
+                  <input id="capWeapon" placeholder="Зброя">
+                </div>
+
+                <textarea id="capComment" placeholder="Коментар" style="margin-top:10px"></textarea>
+                <button id="createCap" class="btn-primary" style="margin-top:10px">Створити капт</button>
+              </div>
+
+              <div class="panel premium">
+                <div class="panel-head">
+                  <div>
+                    <h3>Активні капти</h3>
+                    <div class="panel-sub">Усі поточні активні захоплення.</div>
+                  </div>
+                </div>
+
+                <div id="activeCaps" class="list"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="sec-cabinet" class="section panel premium"></section>
+        <section id="sec-history" class="section panel premium"></section>
+        <section id="sec-admin" class="section panel premium"></section>
+      </main>
+    </div>
+  </div>
+
+  <div id="modalRoot" class="modal-root">
+    <div class="modal-card premium">
+      <h3 id="modalTitle" class="modal-title">Modal</h3>
+      <div id="modalText" class="modal-text"></div>
+      <div id="modalBody"></div>
+      <div id="modalActions" class="modal-actions"></div>
+    </div>
+  </div>
+
+  <div id="toastWrap" class="toast-wrap"></div>
+
+  <script>
+    const gangs = {
+      families: { label: 'The Families 🟢', className: 'gang-fam' },
+      ballas: { label: 'The Ballas Gang 🟣', className: 'gang-bal' },
+      vagos: { label: 'Northside Vagos 🟡', className: 'gang-vag' },
+      marabunta: { label: 'Marabunta Grande 🔵', className: 'gang-mar' }
+    };
+
+    const rolePermissions = {
+      capt: { create: true, map: true, history: true, delete: false, summary: false, admin: false },
+      'dep lead': { create: true, map: true, history: true, delete: true, summary: true, admin: false },
+      lead: { create: true, map: true, history: true, delete: true, summary: true, admin: false },
+      admin: { create: true, map: true, history: true, delete: true, summary: true, admin: true }
+    };
+
+    const icons = ['☠', '🔒', '⏱', '🏰'];
+    const defaultAdmin = { id: 'admin', login: 'Matthew', password: null, gang: 'families', role: 'admin' };
+
+    const MAP_LAYOUT = [
+      'GGGGGG..GCCC..',
+      'GGGGGG..GYYCC.',
+      'GGGGGG..PYYCCC',
+      '.PPPPP..PYYCCC',
+      '.PPPPP..YYYCCC',
+      '..PPPP..YYYCCC',
+      '.....P..YYYCCC',
+      '........PPYYY.',
+      '.........PYY..'
+    ];
+
+    const TOWER_IDS = [2, 24, 46, 73];
+    const TERRITORY_COUNT = 80;
+
+    async function hashPassword(password) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function buildDefaultTerritories() {
+      const out = [];
+      let id = 1;
+
+      for (const row of MAP_LAYOUT) {
+        for (const ch of row) {
+          if (ch === '.') continue;
+
+          const gang =
+            ch === 'G' ? 'families' :
+            ch === 'P' ? 'ballas' :
+            ch === 'Y' ? 'vagos' :
+            'marabunta';
+
+          let icon = '☠';
+          if (TOWER_IDS.includes(id)) icon = '🏰';
+
+          out.push({
+            id,
+            gang,
+            icon,
+            cooldownUntil: null
+          });
+
+          id += 1;
+        }
+      }
+
+      return out;
+    }
+
+    function normalizeTerritories(arr) {
+      const fresh = buildDefaultTerritories();
+      if (!Array.isArray(arr) || arr.length !== TERRITORY_COUNT) return fresh;
+
+      return fresh.map((base, i) => ({
+        id: base.id,
+        gang: arr[i]?.gang && gangs[arr[i].gang] ? arr[i].gang : base.gang,
+        icon: icons.includes(arr[i]?.icon) ? arr[i].icon : base.icon,
+        cooldownUntil: arr[i]?.cooldownUntil || null
+      }));
+    }
+
+    const bc = new BroadcastChannel('capture_ukraine_sync');
+    const state = {
+      authMode: 'login',
+      selectedTerritory: null,
+      user: JSON.parse(sessionStorage.getItem('cu_user') || 'null'),
+      users: JSON.parse(localStorage.getItem('cu_users') || 'null') || [defaultAdmin],
+      territories: normalizeTerritories(JSON.parse(localStorage.getItem('cu_territories') || 'null')),
+      captures: JSON.parse(localStorage.getItem('cu_captures') || '[]')
+    };
+
+    const el = {
+      auth: document.getElementById('auth'),
+      authTitle: document.getElementById('authTitle'),
+      authLogin: document.getElementById('authLogin'),
+      authPass: document.getElementById('authPass'),
+      authGang: document.getElementById('authGang'),
+      regGangWrap: document.getElementById('regGangWrap'),
+      authSubmit: document.getElementById('authSubmit'),
+      tabLogin: document.getElementById('tabLogin'),
+      tabRegister: document.getElementById('tabRegister'),
+      sidebar: document.getElementById('sidebar'),
+      adminNav: document.getElementById('adminNav'),
+      mapGrid: document.getElementById('mapGrid'),
+      activeCaps: document.getElementById('activeCaps'),
+      secCabinet: document.getElementById('sec-cabinet'),
+      secHistory: document.getElementById('sec-history'),
+      secAdmin: document.getElementById('sec-admin'),
+      modalRoot: document.getElementById('modalRoot'),
+      modalTitle: document.getElementById('modalTitle'),
+      modalText: document.getElementById('modalText'),
+      modalBody: document.getElementById('modalBody'),
+      modalActions: document.getElementById('modalActions'),
+      toastWrap: document.getElementById('toastWrap'),
+      liveClock: document.getElementById('liveClock'),
+      territoriesBadge: document.getElementById('territoriesBadge')
+    };
+
+    const gangOpts = () => Object.entries(gangs).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join('');
+    const formatOpts = () => Array.from({ length: 20 }, (_, i) => i + 1).map(n => `<option value="${n}x${n}">${n}x${n}</option>`).join('');
+
+    const can = (p) => !!rolePermissions[state.user?.role]?.[p];
+    const canManageCapture = (c) => !!state.user && (can('admin') || c.attack === state.user.gang || c.defense === state.user.gang);
+
+    async function initDefaultAdmin() {
+      if (!state.users || !state.users.length) {
+        const hashed = await hashPassword('fosty2004');
+        state.users = [{
+          id: 'admin',
+          login: 'Matthew',
+          password: hashed,
+          gang: 'families',
+          role: 'admin'
+        }];
+        persist(false);
+        return;
+      }
+
+      const adminUser = state.users.find(u => u.id === 'admin');
+      if (adminUser) {
+        adminUser.login = 'Matthew';
+        adminUser.password = await hashPassword('fosty2004');
+        adminUser.gang = 'families';
+        adminUser.role = 'admin';
+        persist(false);
+      } else {
+        const hashed = await hashPassword('fosty2004');
+        state.users.push({
+          id: 'admin',
+          login: 'Matthew',
+          password: hashed,
+          gang: 'families',
+          role: 'admin'
+        });
+        persist(false);
+      }
+    }
+
+    function isTerritoryOnCooldown(territory) {
+      if (!territory?.cooldownUntil) return false;
+      return new Date(territory.cooldownUntil).getTime() > Date.now();
+    }
+
+    function formatCooldown(ms) {
+      const totalSec = Math.max(0, Math.floor(ms / 1000));
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+
+    function getTerritoryById(id) {
+      return state.territories.find(t => t.id === id);
+    }
+
+    function toast(message, type = 'info') {
+      const node = document.createElement('div');
+      node.className = `toast ${type}`;
+      node.textContent = message;
+      el.toastWrap.appendChild(node);
+      setTimeout(() => {
+        node.style.opacity = '0';
+        node.style.transform = 'translateY(8px)';
+      }, 2500);
+      setTimeout(() => node.remove(), 3000);
+    }
+
+    function closeModal() {
+      el.modalRoot.classList.remove('show');
+      el.modalBody.innerHTML = '';
+      el.modalActions.innerHTML = '';
+    }
+
+    function openModal({ title, text = '', bodyHTML = '', actions = [] }) {
+      return new Promise(resolve => {
+        el.modalTitle.textContent = title;
+        el.modalText.textContent = text;
+        el.modalBody.innerHTML = bodyHTML;
+        el.modalActions.innerHTML = '';
+
+        actions.forEach(action => {
+          const btn = document.createElement('button');
+          btn.textContent = action.label;
+          btn.className = action.className || 'btn-secondary';
+          btn.addEventListener('click', () => {
+            const result = action.onClick ? action.onClick() : true;
+            if (result !== false) {
+              closeModal();
+              resolve(result);
+            }
+          });
+          el.modalActions.appendChild(btn);
+        });
+
+        el.modalRoot.classList.add('show');
+      });
+    }
+
+    async function showConfirm(title, text) {
+      return await openModal({
+        title,
+        text,
+        actions: [
+          { label: 'Скасувати', className: 'btn-secondary', onClick: () => false },
+          { label: 'Підтвердити', className: 'btn-primary', onClick: () => true }
+        ]
+      });
+    }
+
+    async function showSummaryModal(defaultWinner) {
+      const bodyHTML = `
+        <div class="row">
+          <select id="modalWinner">
+            ${Object.entries(gangs).map(([k, v]) => `<option value="${k}" ${k === defaultWinner ? 'selected' : ''}>${v.label}</option>`).join('')}
+          </select>
+          <input id="modalScore" placeholder="Рахунок" value="1:0">
+        </div>
+        <textarea id="modalComment" placeholder="Коментар" style="margin-top:10px"></textarea>
+      `;
+
+      return await openModal({
+        title: 'Подання підсумку',
+        text: 'Вкажи переможця, рахунок і додатковий коментар для завершення капта.',
+        bodyHTML,
+        actions: [
+          { label: 'Скасувати', className: 'btn-secondary', onClick: () => false },
+          {
+            label: 'Завершити',
+            className: 'btn-primary',
+            onClick: () => ({
+              winner: document.getElementById('modalWinner').value,
+              score: document.getElementById('modalScore').value.trim(),
+              comment: document.getElementById('modalComment').value.trim()
+            })
+          }
+        ]
+      });
+    }
+
+    function getGangClass(gangKey) {
+      return gangs[gangKey]?.className || '';
+    }
+
+    function getCellBackground(gangKey) {
+      switch (gangKey) {
+        case 'families': return 'linear-gradient(180deg, #13ff6b 0%, #00c84f 100%)';
+        case 'ballas': return 'linear-gradient(180deg, #ff20ff 0%, #b700e5 100%)';
+        case 'vagos': return 'linear-gradient(180deg, #ffe040 0%, #d4a600 100%)';
+        case 'marabunta': return 'linear-gradient(180deg, #24dcff 0%, #00a9db 100%)';
+        default: return 'linear-gradient(180deg, #475569 0%, #334155 100%)';
+      }
+    }
+
+    function getCellGlow(gangKey) {
+      switch (gangKey) {
+        case 'families': return '0 0 16px rgba(0,240,96,.36), inset 0 -12px 20px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.14), 0 10px 18px rgba(0,0,0,.24)';
+        case 'ballas': return '0 0 16px rgba(217,0,255,.36), inset 0 -12px 20px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.14), 0 10px 18px rgba(0,0,0,.24)';
+        case 'vagos': return '0 0 16px rgba(255,212,0,.36), inset 0 -12px 20px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.14), 0 10px 18px rgba(0,0,0,.24)';
+        case 'marabunta': return '0 0 16px rgba(23,207,255,.36), inset 0 -12px 20px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.14), 0 10px 18px rgba(0,0,0,.24)';
+        default: return 'inset 0 -12px 20px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.14), 0 10px 18px rgba(0,0,0,.24)';
+      }
+    }
+
+    function gangLabel(gangKey) {
+      const cls = getGangClass(gangKey);
+      return `<span class="gang-glow ${cls}">${gangs[gangKey].label}</span>`;
+    }
+
+    function persist(sync = true) {
+      localStorage.setItem('cu_users', JSON.stringify(state.users));
+      localStorage.setItem('cu_territories', JSON.stringify(state.territories));
+      localStorage.setItem('cu_captures', JSON.stringify(state.captures));
+      if (sync) bc.postMessage('sync');
+    }
+
+    function setAuthMode(mode) {
+      state.authMode = mode;
+      const reg = mode === 'register';
+      el.authTitle.textContent = reg ? 'Реєстрація' : 'Вхід';
+      el.regGangWrap.style.display = reg ? 'block' : 'none';
+      el.authSubmit.textContent = reg ? 'Зареєструватися' : 'Увійти';
+      el.tabLogin.classList.toggle('active', !reg);
+      el.tabRegister.classList.toggle('active', reg);
+    }
+
+    async function processAuth() {
+      const loginVal = el.authLogin.value.trim();
+      const passVal = el.authPass.value;
+      const gangVal = el.authGang.value;
+
+      if (!loginVal || !passVal) return toast('Заповніть логін та пароль.', 'error');
+
+      if (state.authMode === 'register' && passVal.length < 6) {
+        return toast('Пароль має містити щонайменше 6 символів.', 'error');
+      }
+
+      const hashedPassword = await hashPassword(passVal);
+
+      if (state.authMode === 'register') {
+        if (state.users.some(u => u.login.toLowerCase() === loginVal.toLowerCase())) {
+          return toast('Логін вже зайнятий.', 'error');
+        }
+
+        const u = {
+          id: crypto.randomUUID(),
+          login: loginVal,
+          password: hashedPassword,
+          gang: gangVal,
+          role: 'capt'
+        };
+
+        state.users.push(u);
+        persist();
+        login(u);
+        toast('Реєстрація успішна.', 'success');
+      } else {
+        const u = state.users.find(
+          x => x.login.toLowerCase() === loginVal.toLowerCase() && x.password === hashedPassword
+        );
+
+        if (!u) return toast('Невірний логін або пароль.', 'error');
+
+        login(u);
+        toast('Вхід виконано.', 'success');
+      }
+    }
+
+    function login(u) {
+      state.user = { ...u };
+      sessionStorage.setItem('cu_user', JSON.stringify(state.user));
+      el.auth.style.display = 'none';
+      render();
+    }
+
+    function selectTerritory(id) {
+      state.selectedTerritory = id;
+      document.getElementById('capTerr').value = id;
+      document.querySelectorAll('.cell.selected').forEach(n => n.classList.remove('selected'));
+      const node = document.querySelector(`.cell[data-territory='${id}']`);
+      if (node) node.classList.add('selected');
+    }
+
+    function renderMap() {
+      el.mapGrid.innerHTML = '';
+      let idx = 0;
+
+      for (const row of MAP_LAYOUT) {
+        for (const ch of row) {
+          const node = document.createElement('div');
+
+          if (ch === '.') {
+            node.className = 'cell ghost';
+            el.mapGrid.appendChild(node);
+            continue;
+          }
+
+          const t = state.territories[idx++];
+          const isCooldown = isTerritoryOnCooldown(t);
+          const remaining = isCooldown ? formatCooldown(new Date(t.cooldownUntil).getTime() - Date.now()) : null;
+
+          node.className = 'cell';
+          node.dataset.territory = String(t.id);
+          node.style.background = getCellBackground(t.gang);
+          node.style.boxShadow = getCellGlow(t.gang);
+
+          const timerBadge = isCooldown ? `<span class="lock-timer">${remaining}</span>` : '';
+          const iconToShow = isCooldown ? '🔒' : t.icon;
+
+          node.innerHTML = `<small>${t.id}</small>${iconToShow}${timerBadge}`;
+
+          node.addEventListener('click', () => {
+            if (isCooldown) {
+              toast('Ця територія зараз на cooldown.', 'error');
+              return;
+            }
+            selectTerritory(t.id);
+          });
+
+          if (state.selectedTerritory === t.id) node.classList.add('selected');
+          el.mapGrid.appendChild(node);
+        }
+      }
+    }
+
+    function renderStats() {
+      const c = { families: 0, ballas: 0, vagos: 0, marabunta: 0 };
+      state.territories.forEach(t => { if (c[t.gang] !== undefined) c[t.gang]++; });
+
+      document.getElementById('sFam').textContent = c.families;
+      document.getElementById('sBal').textContent = c.ballas;
+      document.getElementById('sVag').textContent = c.vagos;
+      document.getElementById('sMar').textContent = c.marabunta;
+      el.territoriesBadge.textContent = `${TERRITORY_COUNT} Territories`;
+      document.getElementById('capTerr').max = TERRITORY_COUNT;
+    }
+
+    function captureCard(c) {
+      const actions = [];
+      if (can('summary') && canManageCapture(c) && c.status === 'active') {
+        actions.push(`<button class="btn-primary" onclick="submitSummary('${c.id}')">Подати підсумок</button>`);
+      }
+      if (can('delete') && canManageCapture(c)) {
+        actions.push(`<button class="btn-danger" onclick="deleteCapture('${c.id}')">Видалити</button>`);
+      }
+
+      return `
+        <div class="capture">
+          <div class="capture-top">
+            <div class="capture-title">${gangLabel(c.attack)} vs ${gangLabel(c.defense)}</div>
+            <div class="pill">Територія #${c.territory}</div>
+          </div>
+
+          <div class="capture-meta">Формат: ${c.format} • ${c.date} ${c.time}</div>
+          <div class="capture-meta">Зброя: ${c.weapon || '—'} • Створив: ${c.createdBy}</div>
+          <div class="capture-meta">${c.comment || 'Без коментаря'}</div>
+
+          ${c.result ? `
+            <div class="chips">
+              <span class="chip">🏆 ${gangs[c.result.winner].label}</span>
+              <span class="chip">Рахунок: ${c.result.score}</span>
+              <span class="chip">${c.result.comment || 'Без примітки'}</span>
+            </div>` : ''
+          }
+
+          ${actions.length ? `<div class="actions">${actions.join('')}</div>` : ''}
+        </div>
+      `;
+    }
+
+    const renderCaptures = () => {
+      const list = state.captures.filter(c => c.status === 'active');
+      el.activeCaps.innerHTML = list.length ? list.map(captureCard).join('') : '<div class="muted">Активних каптів немає.</div>';
+    };
+
+    const renderCabinet = () => {
+      const gang = state.user.gang;
+      const list = state.captures.filter(c => c.attack === gang || c.defense === gang);
+
+      el.secCabinet.innerHTML = `
+        <div class="panel-head">
+          <div>
+            <h3>Кабінет банди</h3>
+            <div class="panel-sub">Усі атаки, захисти та результати вашої банди.</div>
+          </div>
+        </div>
+        ${list.length ? list.map(captureCard).join('') : '<div class="muted">Записів немає.</div>'}
+      `;
+    };
+
+    const renderHistory = () => {
+      const done = state.captures
+        .filter(c => c.status === 'finished')
+        .sort((a,b) => `${b.date} ${b.time}`.localeCompare(`${a.date} ${a.time}`));
+
+      const grouped = done.reduce((acc, c) => ((acc[c.date] ||= []).push(c), acc), {});
+      const dates = Object.keys(grouped).sort((a,b) => b.localeCompare(a));
+
+      el.secHistory.innerHTML = `
+        <div class="panel-head">
+          <div>
+            <h3>Історія каптів</h3>
+            <div class="panel-sub">Завершені капти, згруповані по датах.</div>
+          </div>
+        </div>
+        ${
+          dates.length
+            ? dates.map(d => `<div class="section-block"><h4>${d}</h4>${grouped[d].map(captureCard).join('')}</div>`).join('')
+            : '<div class="muted">Історія порожня.</div>'
+        }
+      `;
+    };
+
+    function renderAdmin() {
+      if (!can('admin')) {
+        el.secAdmin.innerHTML = '<div class="muted">Доступ лише для admin.</div>';
+        return;
+      }
+
+      const usersHtml = state.users.map(u => `
+        <div class="capture">
+          <b>${u.login}</b>
+          <div class="capture-meta">${gangs[u.gang]?.label || '-'} • ${u.role}</div>
+          ${
+            u.id === 'admin'
+              ? '<div class="capture-meta">Системний користувач</div>'
+              : `
+                <div class="row" style="margin-top:10px">
+                  <select onchange="updateUser('${u.id}','role',this.value)">
+                    ${['capt','dep lead','lead','admin'].map(r => `<option ${u.role === r ? 'selected' : ''} value="${r}">${r}</option>`).join('')}
+                  </select>
+                  <select onchange="updateUser('${u.id}','gang',this.value)">
+                    ${Object.keys(gangs).map(g => `<option ${u.gang === g ? 'selected' : ''} value="${g}">${gangs[g].label}</option>`).join('')}
+                  </select>
+                  <button class="btn-danger" onclick="removeUser('${u.id}')">Видалити</button>
+                </div>
+              `
+          }
+        </div>
+      `).join('');
+
+      el.secAdmin.innerHTML = `
+        <div class="panel-head">
+          <div>
+            <h3>Адмін-панель</h3>
+            <div class="panel-sub">Створення користувачів, зміна ролей, фарбування територій та керування cooldown.</div>
+          </div>
+        </div>
+
+        <div class="admin-grid">
+          <div class="admin-card">
+            <h4>Створити користувача</h4>
+            <div class="row">
+              <input id="newLogin" placeholder="Логін">
+              <input id="newPass" placeholder="Пароль">
+              <select id="newGang">${gangOpts()}</select>
+              <select id="newRole">${['capt','dep lead','lead','admin'].map(r => `<option value="${r}">${r}</option>`).join('')}</select>
+            </div>
+            <button class="btn-primary" onclick="createUser()" style="margin-top:10px">Створити</button>
+          </div>
+
+          <div class="admin-card">
+            <h4>Фарбування території</h4>
+            <div class="row">
+              <select id="paintTerr">${state.territories.map(t => `<option value="${t.id}">Територія №${t.id}</option>`).join('')}</select>
+              <select id="paintGang">${gangOpts()}</select>
+              <select id="paintIcon">${icons.map(i => `<option value="${i}">${i}</option>`).join('')}</select>
+            </div>
+            <button class="btn-primary" onclick="paintTerritory()" style="margin-top:10px">Зафарбувати</button>
+          </div>
+
+          <div class="admin-card">
+            <h4>Скинути cooldown / таймер</h4>
+            <div class="row">
+              <select id="cooldownTerr">
+                ${state.territories.map(t => `<option value="${t.id}">Територія №${t.id}</option>`).join('')}
+              </select>
+            </div>
+            <button class="btn-danger" onclick="clearTerritoryCooldown()" style="margin-top:10px">
+              Прибрати таймер і cooldown
+            </button>
+            <button class="btn-secondary" onclick="clearTerritoryFully()" style="margin-top:10px">
+              Прибрати cooldown і активний капт
+            </button>
+          </div>
+        </div>
+
+        <div class="section-block">
+          <h4>Користувачі</h4>
+          ${usersHtml}
+        </div>
+      `;
+    }
+
+    function renderProfile() {
+      const safeGang = gangs[state.user?.gang] ? state.user.gang : 'families';
+      if (!gangs[state.user?.gang]) state.user.gang = safeGang;
+
+      document.getElementById('uLogin').textContent = state.user.login;
+      document.getElementById('uGang').textContent = gangs[safeGang].label;
+      document.getElementById('uRole').textContent = `Роль: ${state.user.role}`;
+      el.adminNav.style.display = can('admin') ? 'block' : 'none';
+      document.getElementById('createCap').disabled = !can('create');
+
+      document.getElementById('capAttack').value = can('admin')
+        ? (document.getElementById('capAttack').value || safeGang)
+        : safeGang;
+    }
+
+    function render() {
+      if (!state.user) return;
+      renderProfile();
+      renderMap();
+      renderStats();
+      renderCaptures();
+      renderCabinet();
+      renderHistory();
+      renderAdmin();
+    }
+
+    function createCapture() {
+      if (!can('create')) return toast('Недостатньо прав.', 'error');
+
+      const attack = capAttack.value;
+      const defense = capDefend.value;
+      const territory = Number(capTerr.value);
+      const format = capFormat.value;
+      const date = capDate.value;
+      const time = capTime.value;
+      const weapon = capWeapon.value.trim();
+      const comment = capComment.value.trim();
+
+      if (!attack || !defense || !territory || !format || !date || !time) {
+        return toast('Заповніть обовʼязкові поля.', 'error');
+      }
+
+      if (territory < 1 || territory > TERRITORY_COUNT) return toast(`Територія від 1 до ${TERRITORY_COUNT}.`, 'error');
+      if (attack === defense) return toast('Атака і захист не можуть бути однаковими.', 'error');
+      if (!can('admin') && attack !== state.user.gang) return toast('Створення капта тільки від своєї банди.', 'error');
+
+      const terr = getTerritoryById(territory);
+      if (!terr) return toast('Територію не знайдено.', 'error');
+
+      if (isTerritoryOnCooldown(terr)) {
+        return toast('Ця територія зараз на cooldown 24 години.', 'error');
+      }
+
+      const activeOnSameTerr = state.captures.some(c => c.status === 'active' && c.territory === territory);
+      if (activeOnSameTerr) {
+        return toast('На цій території вже є активний капт.', 'error');
+      }
+
+      state.captures.push({
+        id: crypto.randomUUID(),
+        attack,
+        defense,
+        territory,
+        format,
+        date,
+        time,
+        weapon,
+        comment,
+        createdBy: state.user.login,
+        status: 'active',
+        result: null
+      });
+
+      persist();
+      render();
+      toast('Капт створено.', 'success');
+    }
+
+    window.submitSummary = async (id) => {
+      if (!can('summary')) return toast('Недостатньо прав.', 'error');
+
+      const c = state.captures.find(x => x.id === id);
+      if (!c) return;
+      if (!canManageCapture(c)) return toast('Можна закривати тільки капти своєї банди.', 'error');
+
+      const data = await showSummaryModal(c.attack);
+      if (!data || data === false) return;
+
+      if (!data.score) return toast('Рахунок обовʼязковий.', 'error');
+      if (!gangs[data.winner]) return toast('Невірна банда.', 'error');
+
+      c.status = 'finished';
+      c.result = {
+        winner: data.winner,
+        score: data.score,
+        comment: data.comment
+      };
+
+      const terr = state.territories.find(x => x.id === c.territory);
+      if (terr) {
+        terr.gang = data.winner;
+        const capStart = new Date(`${c.date}T${c.time}`);
+        const cooldownStart = new Date(capStart.getTime() + 15 * 60 * 1000);
+        const cooldownEnd = new Date(cooldownStart.getTime() + 24 * 60 * 60 * 1000);
+        terr.cooldownUntil = cooldownEnd.toISOString();
+      }
+
+      persist();
+      render();
+      toast('Капт завершено. Cooldown піде від часу капта + 15 хвилин.', 'success');
+    };
+
+    window.deleteCapture = async (id) => {
+      if (!can('delete')) return toast('Недостатньо прав.', 'error');
+
+      const c = state.captures.find(x => x.id === id);
+      if (!c) return;
+      if (!canManageCapture(c)) return toast('Можна видаляти тільки капти своєї банди.', 'error');
+
+      const ok = await showConfirm('Видалення капта', 'Ти дійсно хочеш видалити цей капт?');
+      if (!ok) return;
+
+      state.captures = state.captures.filter(x => x.id !== id);
+      persist();
+      render();
+      toast('Капт видалено.', 'success');
+    };
+
+    window.updateUser = (id, field, value) => {
+      if (!can('admin')) return;
+
+      const u = state.users.find(x => x.id === id);
+      if (!u) return;
+
+      u[field] = value;
+
+      if (state.user.id === id) {
+        state.user = { ...u };
+        sessionStorage.setItem('cu_user', JSON.stringify(state.user));
+      }
+
+      persist();
+      render();
+      toast('Користувача оновлено.', 'success');
+    };
+
+    window.removeUser = async (id) => {
+      if (!can('admin')) return;
+      const ok = await showConfirm('Видалення користувача', 'Ти дійсно хочеш видалити користувача?');
+      if (!ok) return;
+
+      state.users = state.users.filter(u => u.id !== id);
+      persist();
+      render();
+      toast('Користувача видалено.', 'success');
+    };
+
+    window.createUser = async () => {
+      const loginVal = newLogin.value.trim();
+      const password = newPass.value;
+      const gang = newGang.value;
+      const role = newRole.value;
+
+      if (!loginVal || !password) return toast('Вкажіть логін/пароль.', 'error');
+      if (password.length < 6) return toast('Пароль має містити щонайменше 6 символів.', 'error');
+
+      if (state.users.some(u => u.login.toLowerCase() === loginVal.toLowerCase())) {
+        return toast('Логін вже існує.', 'error');
+      }
+
+      const hashedPassword = await hashPassword(password);
+
+      state.users.push({
+        id: crypto.randomUUID(),
+        login: loginVal,
+        password: hashedPassword,
+        gang,
+        role
+      });
+
+      persist();
+      render();
+      toast('Користувача створено.', 'success');
+    };
+
+    window.paintTerritory = () => {
+      const id = Number(document.getElementById('paintTerr').value);
+      const gang = document.getElementById('paintGang').value;
+      const icon = document.getElementById('paintIcon').value;
+      const terr = state.territories.find(x => x.id === id);
+      if (!terr) return;
+
+      terr.gang = gang;
+      terr.icon = icon;
+      persist();
+      render();
+      toast('Територію оновлено.', 'success');
+    };
+
+    window.clearTerritoryCooldown = async () => {
+      if (!can('admin')) return toast('Недостатньо прав.', 'error');
+
+      const id = Number(document.getElementById('cooldownTerr').value);
+      const terr = state.territories.find(t => t.id === id);
+      if (!terr) return toast('Територію не знайдено.', 'error');
+
+      const ok = await showConfirm(
+        'Скидання cooldown',
+        `Ти дійсно хочеш прибрати таймер і cooldown з території №${id}?`
+      );
+
+      if (!ok) return;
+
+      terr.cooldownUntil = null;
+
+      persist();
+      render();
+      toast(`Cooldown з території №${id} прибрано.`, 'success');
+    };
+
+    window.clearTerritoryFully = async () => {
+      if (!can('admin')) return toast('Недостатньо прав.', 'error');
+
+      const id = Number(document.getElementById('cooldownTerr').value);
+      const terr = state.territories.find(t => t.id === id);
+      if (!terr) return toast('Територію не знайдено.', 'error');
+
+      const ok = await showConfirm(
+        'Повне очищення території',
+        `Прибрати cooldown і всі активні капти на території №${id}?`
+      );
+
+      if (!ok) return;
+
+      terr.cooldownUntil = null;
+      state.captures = state.captures.filter(c => !(c.territory === id && c.status === 'active'));
+
+      persist();
+      render();
+      toast(`Територія №${id} очищена.`, 'success');
+    };
+
+    function bind() {
+      authGang.innerHTML = gangOpts();
+      capAttack.innerHTML = gangOpts();
+      capDefend.innerHTML = gangOpts();
+      capFormat.innerHTML = formatOpts();
+
+      el.tabLogin.addEventListener('click', () => setAuthMode('login'));
+      el.tabRegister.addEventListener('click', () => setAuthMode('register'));
+      el.authSubmit.addEventListener('click', processAuth);
+
+      document.querySelectorAll('.nav button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+          document.getElementById(`sec-${btn.dataset.target}`).classList.add('active');
+
+          el.sidebar.classList.remove('open');
+        });
+      });
+
+      menuBtn.addEventListener('click', () => el.sidebar.classList.toggle('open'));
+
+      logoutBtn.addEventListener('click', async () => {
+        const ok = await showConfirm('Вихід', 'Ти дійсно хочеш вийти з акаунта?');
+        if (!ok) return;
+        sessionStorage.removeItem('cu_user');
+        location.reload();
+      });
+
+      createCap.addEventListener('click', createCapture);
+
+      const now = new Date();
+      capDate.value = now.toISOString().slice(0, 10);
+      capTime.value = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+      capTerr.addEventListener('input', () => {
+        const id = Number(capTerr.value);
+        if (id >= 1 && id <= TERRITORY_COUNT) {
+          state.selectedTerritory = id;
+          document.querySelectorAll('.cell.selected').forEach(n => n.classList.remove('selected'));
+          const node = document.querySelector(`.cell[data-territory='${id}']`);
+          if (node) node.classList.add('selected');
+        }
+      });
+
+      el.modalRoot.addEventListener('click', (e) => {
+        if (e.target === el.modalRoot) closeModal();
+      });
+    }
+
+    function startClock() {
+      const update = () => {
+        const now = new Date();
+        el.liveClock.textContent = now.toLocaleTimeString('uk-UA', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        });
+      };
+      update();
+      setInterval(update, 1000);
+    }
+
+    function startParticles() {
+      const canvas = document.getElementById('particleCanvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+
+      function resize() {
+        canvas.width = window.innerWidth * devicePixelRatio;
+        canvas.height = window.innerHeight * devicePixelRatio;
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+        createParticles();
+      }
+
+      function createParticles() {
+        const count = Math.min(80, Math.floor(window.innerWidth / 18));
+        particles = Array.from({ length: count }, () => ({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          r: Math.random() * 1.8 + 0.6,
+          vx: (Math.random() - 0.5) * 0.18,
+          vy: (Math.random() - 0.5) * 0.18,
+          a: Math.random() * 0.45 + 0.12,
+          color: ['39,182,255', '139,92,246', '0,240,96', '217,0,255'][Math.floor(Math.random() * 4)]
+        }));
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+        for (const p of particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < -20) p.x = window.innerWidth + 20;
+          if (p.x > window.innerWidth + 20) p.x = -20;
+          if (p.y < -20) p.y = window.innerHeight + 20;
+          if (p.y > window.innerHeight + 20) p.y = -20;
+
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(${p.color},${p.a})`;
+          ctx.shadowBlur = 12;
+          ctx.shadowColor = `rgba(${p.color},0.35)`;
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.shadowBlur = 0;
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', resize);
+      resize();
+      draw();
+    }
+
+    bc.onmessage = () => {
+      state.users = JSON.parse(localStorage.getItem('cu_users') || '[]');
+      state.territories = normalizeTerritories(JSON.parse(localStorage.getItem('cu_territories') || 'null'));
+      state.captures = JSON.parse(localStorage.getItem('cu_captures') || '[]');
+      render();
+    };
+
+    (async () => {
+      await initDefaultAdmin();
+
+      bind();
+      startClock();
+      startParticles();
+
+      setInterval(() => {
+        if (state.user) renderMap();
+      }, 1000);
+
+      setAuthMode('login');
+
+      if (state.user) {
+        el.auth.style.display = 'none';
+        render();
+      }
+    })();
+  </script>
+</body>
+</html>
